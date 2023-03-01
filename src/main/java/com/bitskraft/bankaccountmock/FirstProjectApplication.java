@@ -24,6 +24,7 @@ public class FirstProjectApplication {
                 BufferedReader br = new BufferedReader(new InputStreamReader(
                         Objects.requireNonNull(this.getClass().
                                 getResourceAsStream("/nepal-data.json"))));
+
             } catch (Exception e) {
                 System.out.println("Unable to save users: " + e.getMessage());
             }
