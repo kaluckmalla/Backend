@@ -1,13 +1,11 @@
-package com.part.firstProject.controller;
+package com.bitskraft.bankaccountmock.controller;
 
-import com.part.firstProject.dto.AddressDTO;
-import com.part.firstProject.entity.Address;
-import com.part.firstProject.service.AddressService;
+import com.bitskraft.bankaccountmock.entity.Address;
+import com.bitskraft.bankaccountmock.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

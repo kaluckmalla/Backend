@@ -1,4 +1,4 @@
-package com.part.firstProject;
+package com.bitskraft.bankaccountmock;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

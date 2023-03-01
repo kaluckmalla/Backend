@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.part</groupId>
-	<artifactId>firstProject</artifactId>
+	<artifactId>bankaccountmock</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>firstProject</name>
+	<name>bankaccountmock</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
@@ -47,12 +47,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>com.part</groupId>
-            <artifactId>firstProject</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
     </dependencies>
 
 	<build>
