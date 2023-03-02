@@ -13,7 +13,7 @@ import java.util.List;
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DistrictDTO {
-    private int id;
+    private String id;
     private String name;
     private List<MunicipalityDTO> municipalities;
 }

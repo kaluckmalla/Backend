@@ -1,8 +1,9 @@
-package com.bitskraft.bankaccountmock.service;
+package com.bitskraft.bankaccountmock.serviceImpl;
 
 import com.bitskraft.bankaccountmock.dto.AddressDTO;
 import com.bitskraft.bankaccountmock.entity.Address;
 import com.bitskraft.bankaccountmock.repository.AddressRepository;
+import com.bitskraft.bankaccountmock.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

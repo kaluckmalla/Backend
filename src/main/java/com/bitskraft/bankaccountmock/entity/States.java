@@ -15,12 +15,10 @@ import javax.persistence.*;
 @Table(name = "States")
 public class States {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="state_id")
-    private int id;
+    private String id;
     @Column(name="state_name")
     private String name;
-
     @ManyToOne
     private Country country;
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -15,9 +16,8 @@ import javax.persistence.*;
 @Table(name = "Municipality")
 public class Municipality {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name="municipality_id")
-    private int id;
+    private String id;
    @Column(name="municipality_name")
     private String name;
    @Column(name="municipality_type")
