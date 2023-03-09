@@ -15,13 +15,12 @@ import javax.persistence.*;
 @Table(name="District")
 public class District {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "district_id")
-    private int id;
+    private String id;
 
     @Column(name="district_name")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     private States states;
 }

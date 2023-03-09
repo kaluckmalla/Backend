@@ -15,11 +15,9 @@ import javax.persistence.*;
 @Table(name="Country")
 public class Country {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="country_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column(name="country_name")
     private String name;
-    @ManyToOne
-    private States states;
 }
