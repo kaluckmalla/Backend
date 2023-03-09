@@ -5,6 +5,7 @@ import com.bitskraft.bankaccountmock.repository.CountryRepository;
 import com.bitskraft.bankaccountmock.repository.StateRepository;
 import com.bitskraft.bankaccountmock.service.CountryService;
 import com.google.gson.Gson;
+import com.bitskraft.bankaccountmock.service.AddressService;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -60,6 +61,7 @@ public class FirstProjectApplication {
             }
         };
     }
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
@@ -79,4 +81,5 @@ public class FirstProjectApplication {
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(urlBasedCorsConfigurationSource);
     }
+
 }
