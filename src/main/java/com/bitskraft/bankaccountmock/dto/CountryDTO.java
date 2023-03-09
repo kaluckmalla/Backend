@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class CountryDTO {
-    private String id;
+    private int id;
     private String name;
     private List<StatesDTO> states;
 }

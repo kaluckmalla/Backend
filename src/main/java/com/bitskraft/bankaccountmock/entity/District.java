@@ -21,6 +21,6 @@ public class District {
     @Column(name="district_name")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     private States states;
 }

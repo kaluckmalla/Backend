@@ -8,6 +8,7 @@ import com.bitskraft.bankaccountmock.service.MunicipalityService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,6 +20,25 @@ public class MunicipalityServiceImpl implements MunicipalityService {
     @Override
     public List<Municipality> findAll() {
         return municipalityRepository.findAll();
+    }
+
+    @Override
+    public MunicipalityDTO findById(String id) {
+         Optional<Municipality> municipalityOptional=municipalityRepository.findById(id);
+         MunicipalityDTO municipalityDTO=new MunicipalityDTO();
+         Municipality municipality=municipalityOptional.get();
+         municipalityDTO.setName(municipality.getName());
+         municipalityDTO.setType(municipality.getType());
+         return municipalityDTO;
+    }
+
+    @Override
+    public Municipality findMunicipalityById(String id) {
+        Optional<Municipality> municipalityOptional=municipalityRepository.findById(id);
+        Municipality municipality=municipalityOptional.get();
+        municipality.setName(municipality.getName());
+        municipality.setType(municipality.getType());
+        return municipality;
     }
 
     @Override

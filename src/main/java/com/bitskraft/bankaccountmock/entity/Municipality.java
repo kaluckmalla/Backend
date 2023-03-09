@@ -22,6 +22,6 @@ public class Municipality {
     private String name;
    @Column(name="municipality_type")
    private String type;
-   @ManyToOne
+   @ManyToOne(cascade = {CascadeType.ALL})
     private District districts;
 }

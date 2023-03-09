@@ -19,6 +19,6 @@ public class States {
     private String id;
     @Column(name="state_name")
     private String name;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Country country;
 }

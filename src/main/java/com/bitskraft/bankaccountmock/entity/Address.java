@@ -1,13 +1,9 @@
 package com.bitskraft.bankaccountmock.entity;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import javax.persistence.*;
-import java.util.UUID;
-
 
 @Data
 @AllArgsConstructor
@@ -17,15 +13,15 @@ import java.util.UUID;
 @Table(name="Address")
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="address_id")
-    private String id;
-    @ManyToOne
-    private Country name;
-    @ManyToOne
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private Country country;
+    @ManyToOne(cascade = {CascadeType.ALL})
     private  States states;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     private District districts;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Municipality municipalities;
 }

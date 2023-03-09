@@ -13,9 +13,9 @@ import java.util.List;
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AddressDTO {
-     private String id;
-        private List<CountryDTO> name;
-        private List<StatesDTO> states;
-        private List<DistrictDTO> districts;
-        private List<MunicipalityDTO> municipalities;
+     private int id;
+        private int country;
+        private String states;
+        private String districts;
+        private String municipalities;
 }

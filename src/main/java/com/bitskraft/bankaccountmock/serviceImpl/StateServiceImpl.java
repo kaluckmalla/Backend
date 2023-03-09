@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,8 +32,20 @@ public class StateServiceImpl implements StateService {
     }
 
     @Override
-    public StatesDTO findById(int id) {
-        return null;
+    public StatesDTO findById(String id) {
+        Optional<States> statesOptional=stateRepository.findById(id);
+        StatesDTO statesDTO=new StatesDTO();
+        States states=statesOptional.get();
+        statesDTO.setName(states.getName());
+        return statesDTO;
+    }
+
+    @Override
+    public States findStateById(String id) {
+        Optional<States> statesOptional=stateRepository.findById(id);
+        States state=statesOptional.get();
+        state.setName(state.getName());
+        return state;
     }
 
     @Override

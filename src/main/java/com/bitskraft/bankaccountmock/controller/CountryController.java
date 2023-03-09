@@ -1,7 +1,9 @@
 package com.bitskraft.bankaccountmock.controller;
 
 import com.bitskraft.bankaccountmock.entity.Country;
+import com.bitskraft.bankaccountmock.entity.States;
 import com.bitskraft.bankaccountmock.service.CountryService;
+import com.bitskraft.bankaccountmock.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.List;
 public class CountryController {
     @Autowired
       CountryService countryService;
+       StateService stateService;
 
  @GetMapping("/getCountry")
  public ResponseEntity<?> findAll(){
