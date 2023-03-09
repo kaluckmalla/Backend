@@ -19,12 +19,11 @@ public class DistrictServiceImpl implements DistrictService {
 
     DistrictRepository districtRepository;
     MunicipalityService municipalityService;
-    StateService stateService;
-    DistrictServiceImpl(DistrictRepository districtRepository,MunicipalityService municipalityService,
-                        StateService stateService){
+
+    DistrictServiceImpl(DistrictRepository districtRepository,MunicipalityService municipalityService){
         this.districtRepository=districtRepository;
         this.municipalityService=municipalityService;
-        this.stateService=stateService;
+//        this.stateService=stateService;
     }
     @Override
     public List<District> findAll() {
