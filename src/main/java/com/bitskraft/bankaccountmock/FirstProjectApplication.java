@@ -1,6 +1,7 @@
 package com.bitskraft.bankaccountmock;
 
 import com.bitskraft.bankaccountmock.service.AddressService;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,6 +29,11 @@ public class FirstProjectApplication {
                 System.out.println("Unable to save users: " + e.getMessage());
             }
         };
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
 }
