@@ -13,4 +13,6 @@ public interface CustomerAccountRepository extends JpaRepository<CustomerAccount
 
     @Query(value = "SELECT * FROM customer_account WHERE customer_id = ?1", nativeQuery = true)
     List<CustomerAccount> findByCustomerId(String customerId);
+    @Query(value = "SELECT * FROM customer_account WHERE customer_id = ?1 and account_type=?2", nativeQuery = true)
+    List<CustomerAccount> findByCustomerIdAccountType(String customerId,String accountType);
 }

@@ -9,11 +9,11 @@ public interface CustomerServices {
 
     String addCustomerDetail(CustomerDto customerDto);
 
-     CustomerDto getCustomerCustomerAccount(String customerId);
-    String updateCustomerCustomerAccount(String customerId, CustomerDto customerDto);
+     CustomerDto getCustomer(String customerId);
+    String updateCustomer(String customerId, CustomerDto customerDto);
 
     String deleteCustomerCustomerAccount(String customerId);
 
-    ResponseEntity<List<CustomerDto>> getAllCustomerCustomerAccount();
+    ResponseEntity<List<CustomerDto>> getAllCustomer();
 
 }

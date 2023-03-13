@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class CustomerController {
 
     //Add Customer
     @PostMapping("addCustomer")
-    public ResponseEntity<String> addCustomer(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<String> addCustomer(@RequestBody @Valid  CustomerDto customerDto) {
 
     return ResponseEntity.ok(this.customerServices.addCustomerDetail(customerDto));
 
@@ -32,15 +33,15 @@ public class CustomerController {
     @GetMapping("findCustomer/{customerId}")
     public ResponseEntity<CustomerDto> getCustomer(@PathVariable String customerId) {
 
-        return ResponseEntity.ok(customerServices.getCustomerCustomerAccount(customerId));
+        return ResponseEntity.ok(customerServices.getCustomer(customerId));
 
 
     }
     //Updating customer details
     @PutMapping("updateCustomer/{customerId}")
-    public ResponseEntity<String> updateCustomer(@PathVariable String customerId,@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<String> updateCustomer(@PathVariable String customerId,@RequestBody @Valid CustomerDto customerDto) {
 
-        return ResponseEntity.ok(customerServices.updateCustomerCustomerAccount(customerId, customerDto));
+        return ResponseEntity.ok(customerServices.updateCustomer(customerId, customerDto));
 
     }
     //delete single customer
@@ -53,7 +54,7 @@ public class CustomerController {
     //Find All Customer
     @GetMapping("findAllCustomer")
     public ResponseEntity<List<CustomerDto>> getAll() {
-        return customerServices.getAllCustomerCustomerAccount();
+        return customerServices.getAllCustomer();
 
     }
 

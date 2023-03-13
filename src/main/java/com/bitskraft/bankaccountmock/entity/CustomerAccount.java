@@ -18,8 +18,7 @@ import java.util.UUID;
 public class CustomerAccount {
     @Id
     private String customerAccountId;
-    @Column(nullable = false)
-    private Date accountOpenDate;
+
     @Column(nullable = false)
     private String accountType;
     @Column(nullable = false)
@@ -30,6 +29,9 @@ public class CustomerAccount {
     private String accountNumber;
 //    @Column(nullable = false)
 //    private boolean accountStatus;
+@Column(nullable = false)
+private Date accountOpenDate;
+private Date accountUpdatedDate;
 
    @ManyToOne(targetEntity=Customer.class ,  cascade = CascadeType.ALL)
    @JoinColumn(name="customerId")//, referencedColumnName="customerId",nullable=false)

@@ -12,4 +12,8 @@ public interface CustomerAccountServices {
     ResponseEntity<List<CustomerAccountDto>> getCustomerAccount(String customerId);
 
     String deleteCustomerAccount(String customerId);
+
+    ResponseEntity<List<CustomerAccountDto>> getAllCustomerAccounts();
+
+    String updateCustomerAccount(String customerId,String customerAccountId, CustomerAccountDto customerAccountDto);
 }

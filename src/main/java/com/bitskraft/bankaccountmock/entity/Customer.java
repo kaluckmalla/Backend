@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,7 +20,6 @@ import java.util.UUID;
 public class Customer {
     @Id
     private String customerId;
-    @Column(nullable = false)
     private String name;
     @Column(name="dateOfBirth",nullable = false)
     private Date dob;
@@ -51,7 +51,9 @@ public class Customer {
     @Column(nullable = false)
     private String branchCode;
 
-
+    @Column(nullable = false)
+    private Date customerAddedDate;
+    private Date customerUpdatedDate;
     /*
         @OneToMany(targetEntity=CustomerAccount.class ,  cascade = CascadeType.ALL)
     @JoinColumn(name="customerId",referencedColumnName="customerId")
