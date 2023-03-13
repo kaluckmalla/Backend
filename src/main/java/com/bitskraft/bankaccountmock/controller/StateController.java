@@ -23,7 +23,7 @@ public class StateController {
     @GetMapping("/stateDetails/{id}")
     public ResponseEntity<?> finById(@PathVariable("id")String id){
         try{
-            return new ResponseEntity<>(stateService.findStateById(id),HttpStatus.OK );
+            return new ResponseEntity<>(stateService.findById(id),HttpStatus.OK );
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
         }

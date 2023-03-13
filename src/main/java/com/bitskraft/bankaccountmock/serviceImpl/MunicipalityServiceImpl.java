@@ -4,18 +4,24 @@ import com.bitskraft.bankaccountmock.dto.MunicipalityDTO;
 import com.bitskraft.bankaccountmock.entity.District;
 import com.bitskraft.bankaccountmock.entity.Municipality;
 import com.bitskraft.bankaccountmock.repository.MunicipalityRepository;
+import com.bitskraft.bankaccountmock.service.DistrictService;
 import com.bitskraft.bankaccountmock.service.MunicipalityService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class MunicipalityServiceImpl implements MunicipalityService {
     MunicipalityRepository municipalityRepository;
-    MunicipalityServiceImpl(MunicipalityRepository municipalityRepository){
+    DistrictService districtService;
+    @Autowired
+    MunicipalityServiceImpl(MunicipalityRepository municipalityRepository, DistrictService districtService){
         this.municipalityRepository=municipalityRepository;
+        this.districtService=districtService;
     }
     @Override
     public List<Municipality> findAll() {
@@ -39,6 +45,18 @@ public class MunicipalityServiceImpl implements MunicipalityService {
         municipality.setName(municipality.getName());
         municipality.setType(municipality.getType());
         return municipality;
+    }
+
+    @Override
+    public List<MunicipalityDTO> findMunicipalityByDistrictId(String id) {
+        District district=districtService.findDistrictById(id);
+        List<Municipality> municipalityList=municipalityRepository.findAllByDistricts(district);
+        return municipalityList.stream().map(municipality -> {
+            return MunicipalityDTO.builder()
+                    .id(municipality.getId())
+                    .name(municipality.getName())
+                    .build();
+        }).collect(Collectors.toList());
     }
 
     @Override
