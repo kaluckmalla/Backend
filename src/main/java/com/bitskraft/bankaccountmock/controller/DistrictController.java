@@ -1,14 +1,13 @@
 package com.bitskraft.bankaccountmock.controller;
 
 import com.bitskraft.bankaccountmock.entity.District;
+import com.bitskraft.bankaccountmock.entity.States;
 import com.bitskraft.bankaccountmock.service.DistrictService;
+import com.bitskraft.bankaccountmock.service.MunicipalityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,7 +16,11 @@ import java.util.List;
 public class DistrictController {
     @Autowired
     DistrictService districtService;
-
+    MunicipalityService municipalityService;
+    DistrictController(DistrictService districtService,MunicipalityService municipalityService){
+        this.districtService=districtService;
+        this.municipalityService=municipalityService;
+    }
     @GetMapping("/districtDetails")
     public ResponseEntity<?> findAll(){
         List<District> districtList=districtService.findAll();
@@ -27,6 +30,22 @@ public class DistrictController {
     public ResponseEntity<?> findById(@PathVariable String id){
         try{
             return new ResponseEntity<>(districtService.findDistrictById(id),HttpStatus.OK );
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/districtFromState/{id}")
+    public ResponseEntity<?> findDistrictByStateId(@PathVariable String id){
+        try{
+            return new ResponseEntity<>(districtService.findDistrictByStateId(id),HttpStatus.OK );
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/municipalityFromDistrict/{id}")
+    public ResponseEntity<?> findMunicipalityByDistrictId(@PathVariable String id){
+        try{
+            return new ResponseEntity<>(municipalityService.findMunicipalityByDistrictId(id),HttpStatus.OK );
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
         }

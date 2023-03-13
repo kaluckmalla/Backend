@@ -1,6 +1,9 @@
 package com.bitskraft.bankaccountmock.service;
 
 
+import com.bitskraft.bankaccountmock.customerexception.AccountNotFound;
+import com.bitskraft.bankaccountmock.customerexception.AccountTypeAlreadyExist;
+import com.bitskraft.bankaccountmock.customerexception.CustomerNotFound;
 import com.bitskraft.bankaccountmock.dto.CustomerAccountDto;
 import com.bitskraft.bankaccountmock.dto.CustomerDto;
 import com.bitskraft.bankaccountmock.entity.Customer;
@@ -28,57 +31,34 @@ public class CustomerAccountImplementation implements CustomerAccountServices {
 
     @Override
     public String addCustomerAccount(CustomerAccountDto customerAccountDto) {
-
-// convert DTO to entity
         Optional<Customer> customer = customerRepository.findById(customerAccountDto.getCustomerId());
         if (customer.isEmpty()) {
-            throw new RuntimeException("Customer not exist");
+            throw new CustomerNotFound("Customer not found");
         }
         else {
-
-
-
-            List<CustomerAccount> customerAccount = customerAccountRepository.findByCustomerId(customer.get().getCustomerId());
+            List<CustomerAccount> customerAccount = customerAccountRepository.findByCustomerIdAccountType(customer.get().getCustomerId(),customerAccountDto.getAccountType());
             if (customerAccount.isEmpty()) {
                 //Convert Dto to Entity
                 CustomerAccount request = this.convertDtoToEntity(customerAccountDto, customer.get());
                 customerAccountRepository.save(request);
-                return request.getAccountType() + " account added successfully";
+                return request.getAccountType() + " account created successfully";
             } else {
-
-//checking account number
-                //checking account type
-
-
-System.out.println("wwwwwwwwww................"+customerAccount.contains(customerAccountDto.getAccountType()));
-
-
-
-
-                //Convert Dto to Entity
-              //  CustomerAccount request = this.convertDtoToEntity(customerAccountDto, customer.get());
-                //customerAccountRepository.save(request);
-               // return request.getAccountType() + " account added successfully";
-                return  null;
+                throw new AccountTypeAlreadyExist("Your "+customerAccountDto.getAccountType()+" account type already exist");
             }
         }
     }
-
-
-
-
     @Override
     public ResponseEntity<List<CustomerAccountDto>> getCustomerAccount(String customerId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
         if (customer.isEmpty()) {
-            throw new RuntimeException("Customer not exist");
+            throw new CustomerNotFound("Customer not found");
         }else {
 
 //Directly convert to Customer Account to Customer Account Dto
             List<CustomerAccountDto> response = customerAccountRepository.findByCustomerId(customerId).stream().map(this::convertEntityToDto).collect(Collectors.toList());
 
         if (response.isEmpty()) {
-            throw new RuntimeException("You have not created any account yet");
+            throw new AccountNotFound("You have not created any account yet");
         } else {
             return ResponseEntity.ok(response);
         }
@@ -90,7 +70,7 @@ System.out.println("wwwwwwwwww................"+customerAccount.contains(custome
         Optional<CustomerAccount> customerAccount=customerAccountRepository.findById(customerAccountId);
         if (customerAccount.isEmpty())
         {
-            return "Customer account id "+customerAccountId+" not found";
+            throw new AccountNotFound("Customer account not found");
         }
         else{
             customerAccountRepository.delete(customerAccount.get());
@@ -99,20 +79,63 @@ System.out.println("wwwwwwwwww................"+customerAccount.contains(custome
         }
     }
 
+    @Override
+    public ResponseEntity<List<CustomerAccountDto>> getAllCustomerAccounts() {
+        // convert all list entity to DTO
+        List<CustomerAccountDto> response = customerAccountRepository.findAll().stream().map(this::convertEntityToDto).collect(Collectors.toList());
+        if (response.isEmpty()) {
+            throw new AccountNotFound("You have not added any account yet");
+        }else{
+            return ResponseEntity.ok(response);
+
+        }
+    }
+
+    @Override
+    public String updateCustomerAccount(String customerId,String customerAccountId, CustomerAccountDto customerAccountDto) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if (customer.isEmpty()) {
+            throw new CustomerNotFound("Customer not found");
+        }else {
+//Directly convert to Customer Account to Customer Account Dto
+            Optional<CustomerAccount> request =customerAccountRepository.findById(customerAccountId);
+
+            if (request.isEmpty()) {
+                throw new AccountNotFound("Your account not found");
+            } else {
+                Date currentDate=new Date();
+
+                CustomerAccount newCustomerAccount=this.convertDtoToEntity(customerAccountDto,customer.get());
+
+                request.get().setAccountType(newCustomerAccount.getAccountType());
+                request.get().setCurrency(newCustomerAccount.getCurrency());
+                request.get().setCurrentBalance(newCustomerAccount.getCurrentBalance());
+                request.get().setAccountNumber(newCustomerAccount.getAccountNumber());
+                request.get().setAccountOpenDate(request.get().getAccountOpenDate());
+                request.get().setAccountUpdatedDate(currentDate);
+
+                request.get().setCustomer(request.get().getCustomer());
+                customerAccountRepository.save(request.get());
+                return "Customer account updated successfully";
+            }
+        }
+    }
+
     private CustomerAccount convertDtoToEntity(CustomerAccountDto customerAccountDto, Customer customer) {
+        Date currentDate=new Date();
         CustomerAccount customerAccount = new CustomerAccount();
 
-
         customerAccount.setCustomerAccountId(UUID.randomUUID().toString());
-        customerAccount.setAccountOpenDate(customerAccountDto.getAccountOpenDate());
         customerAccount.setAccountType(customerAccountDto.getAccountType());
         customerAccount.setCurrency(customerAccountDto.getCurrency());
         customerAccount.setCurrentBalance(customerAccountDto.getCurrentBalance());
-        customerAccount.setAccountNumber(customerAccountDto.getAccountNumber());
+        customerAccount.setAccountNumber(this.CustomerAccountNumber());
+        customerAccount.setAccountOpenDate(currentDate);
+        customerAccount.setAccountUpdatedDate(null);
+
         customerAccount.setCustomer(customer);
 
         return customerAccount;
-
     }
     private CustomerAccountDto convertEntityToDto(CustomerAccount customerAccount){
         CustomerAccountDto customerAccountDto=new CustomerAccountDto();
@@ -126,5 +149,14 @@ System.out.println("wwwwwwwwww................"+customerAccount.contains(custome
        customerAccountDto.setCustomerId(customerAccount.getCustomer().getCustomerId());
        customerAccountDto.setCustomer(customerAccount.getCustomer());
         return  customerAccountDto;
+    }
+    //generating sequence account number
+    private static int accountNumberSequence = 0;
+
+    private String CustomerAccountNumber(){
+        int accountNumber = 0;
+        accountNumber = ++accountNumberSequence;
+
+        return Integer.toString(accountNumber);
     }
 }

@@ -2,23 +2,28 @@ package com.bitskraft.bankaccountmock.Advice;
 
 import com.bitskraft.bankaccountmock.customerexception.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.HashMap;
+import java.util.Map;
+
 @ControllerAdvice
 public class GlobalCustomerException {
     @ExceptionHandler(CustomerPhoneAlreadyExist.class)
     @ResponseStatus(HttpStatus.OK)
 
-    public @ResponseBody ExceptionMessage handleCustomerPhoneAlreadyExist(CustomerPhoneAlreadyExist customerPhoneAlreadyExist){
+    public @ResponseBody ExceptionMessage CustomerPhoneAlreadyExist(CustomerPhoneAlreadyExist customerPhoneAlreadyExist){
 
         return new ExceptionMessage(HttpStatus.CONFLICT.toString(), customerPhoneAlreadyExist.getMessage());
     }
     @ExceptionHandler(CustomerEmailAlreadyExist.class)
     @ResponseStatus(HttpStatus.OK)
 
-    public @ResponseBody ExceptionMessage handleCustomerEmailAlreadyExist(CustomerEmailAlreadyExist customerEmailAlreadyExist){
+    public @ResponseBody ExceptionMessage CustomerEmailAlreadyExist(CustomerEmailAlreadyExist customerEmailAlreadyExist){
 
         return new ExceptionMessage(HttpStatus.CONFLICT.toString(), customerEmailAlreadyExist.getMessage());
     }
@@ -47,4 +52,17 @@ public class GlobalCustomerException {
 
         return new ExceptionMessage(HttpStatus.INTERNAL_SERVER_ERROR.toString(), customerServerException.getMessage());
     }
+
+    //Customer validation
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+
+    public @ResponseBody Map<String,String> handleInvalidArgument(MethodArgumentNotValidException validationException){
+        Map<String,String> errorMap=new HashMap<>();
+        validationException.getBindingResult().getFieldErrors().forEach(error->{
+            errorMap.put(error.getField(),error.getDefaultMessage());
+        });
+        return errorMap;
+    }
+
 }

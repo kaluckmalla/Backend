@@ -13,6 +13,6 @@ public interface DistrictService {
 
     public District findDistrictById(String id);
 
-    public District findDistrictByStateId(String id);
+    public List<DistrictDTO> findDistrictByStateId(String id);
     public void save(List<DistrictDTO> districts, States states);
 }

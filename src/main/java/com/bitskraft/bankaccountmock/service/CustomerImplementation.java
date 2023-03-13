@@ -30,9 +30,10 @@ public class CustomerImplementation implements CustomerServices {
     //Add customer
     @Override
     public String addCustomerDetail(CustomerDto customerDto){
+        System.out.println("phone................."+customerDto.getPhone());
+        System.out.println("phone. boo................"+customerDto.getDob());
 
-            Date Currentdate = new Date();
-
+            Date currentDate = new Date();
             boolean phoneExist = customerRepository.existsByPhone(customerDto.getPhone());
             boolean emailExist = customerRepository.existsByEmail(customerDto.getEmail());
 
@@ -44,7 +45,7 @@ public class CustomerImplementation implements CustomerServices {
 
                 // return new ResponseEntity("Email already exist", HttpStatus.BAD_REQUEST);
 
-            } else if (customerDto.getDob().after(Currentdate)) {
+            } else if (customerDto.getDob().after(currentDate)) {
                 throw new CustomerDateOfBirthNotValid("Date of birth not valid");
                 // return new ResponseEntity("Date of birth not valid", HttpStatus.BAD_REQUEST);
 
@@ -59,7 +60,7 @@ public class CustomerImplementation implements CustomerServices {
 
     //Getting single customer details
     @Override
-    public CustomerDto getCustomerCustomerAccount(String customerId) {
+    public CustomerDto getCustomer(String customerId) {
         Optional<Customer> request = customerRepository.findById(customerId);
         if(request.isEmpty()) {
             throw new CustomerNotFound("Customer not found");
@@ -72,13 +73,15 @@ public class CustomerImplementation implements CustomerServices {
     }
     //update customer
     @Override
-    public String updateCustomerCustomerAccount(String customerId, CustomerDto customerDto) {
+    public String updateCustomer(String customerId, CustomerDto customerDto) {
         Optional<Customer> request=customerRepository.findById(customerId);
         if (request.isEmpty()){
             throw new CustomerNotFound("Customer not found");
 
         }
         else {
+            Date currentDate = new Date();
+
             Customer newCustomer=this.convertDtoToEntity(customerDto);
 
             request.get().setName(newCustomer.getName());
@@ -97,6 +100,8 @@ public class CustomerImplementation implements CustomerServices {
             request.get().setCifId(newCustomer.getCifId());
             request.get().setBranch(newCustomer.getBranch());
             request.get().setBranchCode(newCustomer.getBranchCode());
+            request.get().setCustomerAddedDate(newCustomer.getCustomerAddedDate());
+            request.get().setCustomerUpdatedDate(currentDate);
 
             customerRepository.save(request.get());
             return "Customer updated successfully";
@@ -117,17 +122,20 @@ public class CustomerImplementation implements CustomerServices {
     }
     //finding all customer list
     @Override
-    public ResponseEntity<List<CustomerDto>> getAllCustomerCustomerAccount() {
+    public ResponseEntity<List<CustomerDto>> getAllCustomer() {
         // convert all list entity to DTO
         List<CustomerDto> response = customerRepository.findAll().stream().map(this::convertEntityToDto).collect(Collectors.toList());
-        return ResponseEntity.ok(response);
+        if (response.isEmpty()) {
+            throw new CustomerNotFound("Customer not added yet");
+        } else {
+            return ResponseEntity.ok(response);
 
+        }
     }
 
-
     private Customer convertDtoToEntity(CustomerDto customerDto){
-       Customer customer=new Customer();
-
+        Date currentDate = new Date();
+        Customer customer=new Customer();
 
         customer.setCustomerId(UUID.randomUUID().toString());
         customer.setName(customerDto.getName());
@@ -146,6 +154,8 @@ public class CustomerImplementation implements CustomerServices {
         customer.setCifId(customerDto.getCifId());
         customer.setBranch(customerDto.getBranch());
         customer.setBranchCode(customerDto.getBranchCode());
+        customer.setCustomerAddedDate(currentDate);
+        customer.setCustomerUpdatedDate(null);
 
         return  customer;
 
@@ -170,6 +180,8 @@ public class CustomerImplementation implements CustomerServices {
         customerDto.setCifId(customer.getCifId());
         customerDto.setBranch(customer.getBranch());
         customerDto.setBranchCode(customer.getBranchCode());
+        customerDto.setCustomerAddedDate(customer.getCustomerAddedDate());
+        customerDto.setCustomerUpdatedDate(customer.getCustomerUpdatedDate());
 
         return  customerDto;
     }
